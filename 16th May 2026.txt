@@ -1,0 +1,16 @@
+CREATE DATABASE VitBhopal_Grades;
+USE vitBhopal_Grades;
+
+CREATE TABLE students(
+    name VARCHAR(100),
+    marks INT,
+    grade CHAR(2)
+);
+
+INSERT INTO students(name, marks, grade)
+VALUES
+('Ashu', 95, 'A'),
+('Rahul', 82, 'B'),
+('Priya', 76, 'C');
+
+SELECT * FROM students;
