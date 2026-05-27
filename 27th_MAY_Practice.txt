@@ -1,0 +1,196 @@
+MongoDB Practice
+
+```js id="j1o5n9"
+use vit
+```
+
+```js id="3jlwm1"
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+])
+```
+
+# $eq operator
+
+```js id="mkjlwm"
+db.products.find({
+    price: {
+        $eq: 899
+    }
+})
+```
+
+```js id="e9juxn"
+db.products.find({
+    "spec.ram": {
+        $eq: 4
+    }
+})
+```
+
+```js id="r75s8k"
+db.products.find({
+    color: {
+        $eq: "black"
+    }
+})
+```
+
+```js id="6es5q4"
+db.products.find({
+    releaseDate: {
+        $eq: new ISODate("2020-05-14")
+    }
+})
+```
+
+# $ne operator
+
+```js id="grclwu"
+db.products.find({
+    price: {
+        $ne: 899
+    }
+})
+```
+
+```js id="g7s42l"
+db.products.find({
+    "spec.screen": {
+        $ne: 9.7
+    }
+})
+```
+
+```js id="h1jcbk"
+db.products.find({
+    storage: {
+        $ne: 128
+    }
+})
+```
+
+# $nin operator
+
+```js id="jlwm42"
+db.products.find({
+    price: {
+        $nin: [699,799]
+    }
+})
+```
+
+```js id="r6s6t5"
+db.products.find({
+    color: {
+        $nin: ["black","white"]
+    }
+})
+```
+
+# $and operator
+
+```js id="y0wwva"
+db.products.find({
+    $and: [
+        {
+            price: 899
+        },
+        {
+            color: {
+                $in: ["white","black"]
+            }
+        }
+    ]
+})
+```
+
+```js id="d24ocd"
+db.products.find({
+    $and: [
+        {
+            price: 699
+        },
+        {
+            price: {
+                $exists: true
+            }
+        }
+    ]
+})
+```
+
+# $or operator
+
+```js id="djlwmw"
+db.products.find({
+    $or: [
+        {
+            price: 799
+        },
+        {
+            price: 899
+        }
+    ]
+})
+```
+
+```js id="5br1o1"
+db.products.find({
+    $or: [
+        {
+            price: {
+                $lt: 699
+            }
+        },
+        {
+            price: {
+                $gt: 799
+            }
+        }
+    ]
+})
+```
+
+# $not operator
+
+```js id="z87h14"
+db.products.find({
+    price: {
+        $not: {
+            $gt: 699
+        }
+    }
+})
+```
+
+```js id="0zlms7"
+db.products.find({
+    name: {
+        $not: /^Smart+/
+    }
+})
+```
+
+# $nor operator
+
+```js id="0byfkw"
+db.products.find({
+    $nor: [
+        {
+            price: 899
+        },
+        {
+            color: "gold"
+        }
+    ]
+})
+```
