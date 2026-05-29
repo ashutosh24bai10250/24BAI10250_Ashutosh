@@ -1,0 +1,532 @@
+MongoDB Sort() Practice
+
+```js
+use vit
+```
+
+```js
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate" : ISODate("2011-05-14T00:00:00Z"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 }, "color" : [ "white", "black" ], "storage" : [ 64, 128, 256 ] },
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate" : ISODate("2011-09-01T00:00:00Z"), "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 }, "color" : [ "white", "black", "purple" ], "storage" : [ 128, 256, 512 ] },
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate" : ISODate("2015-01-14T00:00:00Z"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 }, "color" : [ "blue" ], "storage" : [ 16, 64, 128 ] },
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate" : ISODate("2020-05-14T00:00:00Z"), "spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 }, "color" : [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256, 1024 ] },
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599, "releaseDate" : ISODate("2022-09-14T00:00:00Z"), "spec" : { "ram" : 4, "screen" : 9.7, "cpu" : 1.66 }, "color" : [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256 ] },
+    { "_id" : 6, "name" : "xWidget", "spec" : { "ram" : 64, "screen" : 9.7, "cpu" : 3.66 }, "color" : [ "black" ], "storage" : [ 1024 ] },
+    { "_id" : 7, "name" : "xReader", "price" : null, "spec" : { "ram" : 64, "screen" : 6.7, "cpu" : 3.66 }, "color" : [ "black", "white" ], "storage" : [ 128 ] }
+])
+```
+
+# Sort by price ascending
+
+```js
+db.products.find({
+    price: {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: 1
+})
+```
+
+# Sort by price descending
+
+```js
+db.products.find({
+    price: {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: -1
+})
+```
+
+# Sort by price ascending and name ascending
+
+```js
+db.products.find({
+    price: {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: 1,
+    name: 1
+})
+```
+
+# Sort by price ascending and name descending
+
+```js
+db.products.find({
+    price: {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: 1,
+    name: -1
+})
+```
+
+# Sort by release date ascending
+
+```js
+db.products.find({
+    releaseDate: {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    releaseDate: 1
+}).sort({
+    releaseDate: 1
+})
+```
+
+# Sort by release date descending
+
+```js
+db.products.find({
+    releaseDate: {
+        $exists: 1
+    }
+}, {
+    name: 1,
+    releaseDate: 1
+}).sort({
+    releaseDate: -1
+})
+```
+
+# Sort by RAM in embedded document
+
+```js
+db.products.find({}, {
+    name: 1,
+    spec: 1
+}).sort({
+    "spec.ram": 1
+})
+```
+
+
+MongoDB limit() and skip() Practice
+
+```js
+use vit
+```
+
+```js
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate" : ISODate("2011-05-14T00:00:00Z"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 }, "color" : [ "white", "black" ], "storage" : [ 64, 128, 256 ] },
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate" : ISODate("2011-09-01T00:00:00Z"), "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 }, "color" : [ "white", "black", "purple" ], "storage" : [ 128, 256, 512 ] },
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate" : ISODate("2015-01-14T00:00:00Z"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 }, "color" : [ "blue" ], "storage" : [ 16, 64, 128 ] },
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate" : ISODate("2020-05-14T00:00:00Z"), "spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 }, "color" : [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256, 1024 ] },
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599, "releaseDate" : ISODate("2022-09-14T00:00:00Z"), "spec" : { "ram" : 4, "screen" : 9.7, "cpu" : 1.66 }, "color" : [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256 ] },
+    { "_id" : 6, "name" : "xWidget", "spec" : { "ram" : 64, "screen" : 9.7, "cpu" : 3.66 }, "color" : [ "black" ], "storage" : [ 1024 ] },
+    { "_id" : 7, "name" : "xReader", "price" : null, "spec" : { "ram" : 64, "screen" : 6.7, "cpu" : 3.66 }, "color" : [ "black", "white" ], "storage" : [ 128 ] }
+])
+```
+
+# Get the most expensive product
+
+```js
+db.products.find({}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: -1
+}).limit(1);
+```
+
+# Get the most expensive product with predictable sorting
+
+```js
+db.products.find({}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: -1,
+    name: 1
+}).limit(1);
+```
+
+# Pagination using skip() and limit()
+
+```js
+db.products.find({}, {
+    name: 1,
+    price: 1
+}).sort({
+    price: -1,
+    name: 1
+}).skip(2).limit(2);
+```
+MongoDB updateOne() Practice
+
+```js
+use vit
+```
+
+```js
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+])
+```
+
+# Update price of document with _id 1
+
+```js
+db.products.updateOne({
+    _id: 1
+}, {
+    $set: {
+        price: 899
+    }
+})
+```
+
+# Verify update
+
+```js
+db.products.findOne({
+    _id: 1
+}, {
+    name: 1,
+    price: 1
+})
+```
+
+# Find documents where price is 899
+
+```js
+db.products.find({
+    price: 899
+}, {
+    name: 1,
+    price: 1
+})
+```
+
+# Update first matching document where price is 899
+
+```js
+db.products.updateOne({
+    price: 899
+}, {
+    $set: {
+        price: null
+    }
+})
+```
+
+# Verify update
+
+```js
+db.products.find({
+    _id: 1
+}, {
+    name: 1,
+    price: 1
+})
+```
+
+# Find document with _id 4
+
+```js
+db.products.find({
+    _id: 4
+}, {
+    name: 1,
+    spec: 1
+})
+```
+
+# Update embedded document fields
+
+```js
+db.products.updateOne({
+    _id: 4
+}, {
+    $set: {
+        "spec.ram": 16,
+        "spec.screen": 10.7,
+        "spec.cpu": 2.66
+    }
+})
+```
+
+# Verify embedded document update
+
+```js
+db.products.find({
+    _id: 4
+}, {
+    name: 1,
+    spec: 1
+})
+```
+
+# Update array elements
+
+```js
+db.products.updateOne(
+    {
+        _id: 4
+    },
+    {
+        $set: {
+            "storage.0": 16,
+            "storage.1": 32
+        }
+    }
+)
+```
+
+# Verify array update
+
+```js
+db.products.find({
+    _id: 4
+}, {
+    name: 1,
+    storage: 1
+})
+```
+
+MongoDB updateMany() Practice
+
+```js
+use vit
+```
+
+```js
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+])
+```
+
+# Update documents where price is 899
+
+```js
+db.products.updateMany(
+    { price: 899 },
+    { $set: { price: 895 } }
+)
+```
+
+# Verify update
+
+```js
+db.products.find({
+    price: 895
+}, {
+    name: 1,
+    price: 1
+})
+```
+
+# Find documents where price is greater than 700
+
+```js
+db.products.find({
+    price: { $gt: 700 }
+}, {
+    name: 1,
+    price: 1,
+    spec: 1
+})
+```
+
+# Update embedded document fields
+
+```js
+db.products.updateMany({
+    price: { $gt: 700 }
+}, {
+    $set: {
+        "spec.ram": 32,
+        "spec.screen": 9.8,
+        "spec.cpu": 5.66
+    }
+})
+```
+
+# Update array elements
+
+```js
+db.products.updateMany({
+    _id: {
+        $in: [1, 2, 3]
+    }
+}, {
+    $set: {
+        "storage.0": 16,
+        "storage.1": 32
+    }
+})
+```
+
+# Verify array update
+
+```js
+db.products.find(
+    {
+        _id: {
+            $in: [1, 2, 3]
+        }
+    },
+    {
+        name: 1,
+        storage: 1
+    }
+)
+```
+
+
+MongoDB $inc Operator Practice
+
+```js
+use vit
+```
+
+```js
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+])
+```
+
+# Increase price by 50
+
+```js
+db.products.updateOne({
+    _id: 1
+}, {
+    $inc: {
+        price: 50
+    }
+})
+```
+
+# Verify update
+
+```js
+db.products.find(
+    { _id: 1 },
+    { name: 1, price: 1 }
+)
+```
+
+# Decrease price by 150
+
+```js
+db.products.updateOne({
+    _id: 1
+}, {
+    $inc: {
+        price: -150
+    }
+})
+```
+
+# Verify update
+
+```js
+db.products.find(
+    { _id: 1 },
+    { name: 1, price: 1 }
+)
+```
+
+# Increase multiple fields
+
+```js
+db.products.updateOne({
+    _id: 1
+}, {
+    $inc: {
+        price: 50,
+        "spec.ram": 4
+    }
+})
+```
+
+# Verify update
+
+```js
+db.products.find(
+    { _id: 1 },
+    { name: 1, price: 1, "spec.ram": 1 }
+)
+```
+
+MongoDB $min Operator Practice
+
+```js
+use vit
+```
+
+```js
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+])
+```
+
+# Try to update price to 699
+
+```js
+db.products.updateOne({
+    _id: 5
+}, {
+    $min: {
+        price: 699
+    }
+})
+```
+
+# Update price to 499
+
+```js
+db.products.updateOne({
+    _id: 5
+}, {
+    $min: {
+        price: 499
+    }
+})
+```
+
+# Verify update
+
+```js
+db.products.find(
+    { _id: 5 },
+    { name: 1, price: 1 }
+)
+```
