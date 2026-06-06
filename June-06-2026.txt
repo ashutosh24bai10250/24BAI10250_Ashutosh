@@ -1,0 +1,108 @@
+use("vit");
+
+db.books.insertOne({
+  title: "MongoDB insertOne",
+  isbn: "0-7617-6154-3"
+});
+
+db.books.insertMany([
+  { title: "NoSQL Distilled", isbn: "0-4696-7030-4" },
+  { title: "NoSQL in 7 Days", isbn: "0-K886-6880-8" },
+  { title: "NoSQL Database", isbn: "0-2504-6932-4" }
+]);
+
+db.users.insertMany([
+  { name: "Alice", email: "alice@test.com" },
+  { name: "Bob", email: "bob@test.com" },
+  { name: "Carol", email: "carol@test.com" }
+]);
+
+db.sales.insertMany([
+  { item: "abc", price: 10, quantity: 2, date: "2024-01-01" },
+  { item: "jkl", price: 25, quantity: 1, date: "2024-01-02" },
+  { item: "xyz", price: 5, quantity: 10, date: "2024-01-03" },
+  { item: "abc", price: 10, quantity: 5, date: "2024-01-04" }
+]);
+
+db.books.getIndexes();
+
+db.books.createIndex({ title: 1 });
+
+db.sales.createIndex({ item: 1 });
+
+db.books.getIndexes();
+
+db.sales.getIndexes();
+
+db.users.createIndex({ email: 1 }, { unique: true });
+
+db.users.getIndexes();
+
+db.users.insertOne({ name: "David", email: "david@test.com" });
+
+db.users.insertOne({ name: "Alice2", email: "alice@test.com" });
+
+db.sales.createIndex({ item: 1, price: -1 });
+
+db.sales.getIndexes();
+
+db.locations.insertMany([
+  { latitude: 19.076, longitude: 72.877, city: "Mumbai" },
+  { latitude: 28.704, longitude: 77.102, city: "Delhi" },
+  { latitude: 12.972, longitude: 77.594, city: "Bangalore" }
+]);
+
+db.locations.createIndex(
+  { latitude: 1, longitude: 1 },
+  { unique: true }
+);
+
+db.locations.insertOne({
+  latitude: 22.572,
+  longitude: 88.363,
+  city: "Kolkata"
+});
+
+db.locations.insertOne({
+  latitude: 19.076,
+  longitude: 72.877,
+  city: "Mumbai Duplicate"
+});
+
+db.employees.insertMany([
+  { firstName: "Raj", lastName: "Kumar", dept: "ECE" },
+  { firstName: "Priya", lastName: "Sharma", dept: "CSE" }
+]);
+
+db.employees.createIndex(
+  { firstName: 1, lastName: 1 },
+  { unique: true }
+);
+
+db.locations.getIndexes();
+
+db.employees.getIndexes();
+
+db.books.dropIndex("title_1");
+
+db.books.getIndexes();
+
+db.sales.dropIndexes();
+
+db.sales.getIndexes();
+
+db.books.createIndex({ isbn: -1 });
+
+db.books.getIndexes();
+
+db.sales.find().sort({ item: 1 });
+
+db.sales.find({ item: "abc" }).explain("executionStats");
+
+db.users.find({ email: "alice@test.com" });
+
+db.users.find().sort({ email: 1 });
+
+db.books.find().sort({ title: 1 });
+
+db.books.find({ title: "NoSQL Distilled" }).explain("executionStats");
